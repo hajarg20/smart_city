@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/helper/on_generate_routes.dart';
 import 'package:smart_city/core/services/shared_pref_singleton.dart';
+import 'package:smart_city/core/utils/app_colors.dart';
 import 'package:smart_city/features/splash/presentation/views/splash_view.dart';
 
 void main() async {
@@ -19,15 +20,16 @@ class SmartCity extends StatelessWidget {
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: onGenerateRoute,
-          initialRoute: SplashView.routeName,
-          home: child,
-        );
-      },
-      child: const SplashView(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Cairo',
+          scaffoldBackgroundColor: AppColors.lightprimaryColor,
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+        ),
+        onGenerateRoute: onGenerateRoute,
+        initialRoute: SplashView.routeName,
+      ),
     );
   }
 }
