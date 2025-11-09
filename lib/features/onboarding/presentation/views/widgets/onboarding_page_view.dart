@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/services/shared_pref_singleton.dart';
 import 'package:smart_city/features/Auth/presentation/views/signup_view.dart';
 import 'package:smart_city/features/onboarding/presentation/views/widgets/onboarding_pageview_item.dart';

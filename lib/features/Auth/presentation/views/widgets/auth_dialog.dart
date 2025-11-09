@@ -50,6 +50,7 @@ class AuthDialog extends StatelessWidget {
               SizedBox(height: 22.h),
 
               CustomButton(
+                color: AppColors.primaryColor,
                 text: 'Log in Now',
                 onPressed: () {
                   Navigator.pop(context);
