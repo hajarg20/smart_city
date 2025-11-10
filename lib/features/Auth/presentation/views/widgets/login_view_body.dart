@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
 import 'package:smart_city/features/Auth/presentation/views/widgets/Login_form.dart';
+import 'package:smart_city/features/Home/presentation/views/home_view.dart';
 import '../widgets/login_logo.dart';
 import '../widgets/login_title.dart';
 import '../widgets/divider_or.dart';
 import '../widgets/signup_link.dart';
-import '../widgets/auth_dialog.dart';
 import 'package:smart_city/core/widgets/custom_button.dart';
 
 class LoginViewBody extends StatelessWidget {
@@ -53,14 +53,7 @@ class LoginViewBody extends StatelessWidget {
                     color: AppColors.primaryColor,
                     text: 'Log In',
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (_) => const AuthDialog(
-                          Title: 'Logged In Successfully',
-                          subTitle: 'Welcome to Smart City',
-                        ),
-                      );
+                      Navigator.pushNamed(context, homeView.routeName);
                     },
                   ),
                   SizedBox(height: 24.h),
