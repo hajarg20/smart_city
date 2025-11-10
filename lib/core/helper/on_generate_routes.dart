@@ -24,6 +24,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const ProfileView());
     case EditProfileView.routeName:
       return MaterialPageRoute(builder: (context) => const EditProfileView());
+    case PaymentMethodView.routeName:
+      return MaterialPageRoute(builder: (context) => const PaymentMethodView());
+    case PaymentConfirmationView.routeName:
+      return MaterialPageRoute(builder: (context) => const PaymentConfirmationView());
+    case homeView.routeName:
+      return MaterialPageRoute(builder: (context) => const homeView());
+    case NotificationView.routeName:
+      return MaterialPageRoute(builder: (context) => const NotificationView());
 
     default:
       return MaterialPageRoute(builder: (context) => const Scaffold());
