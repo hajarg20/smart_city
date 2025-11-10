@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_city/features/Home/presentation/views/home_view.dart';
 import 'package:smart_city/features/home/presentation/views/home_view.dart';
 import 'package:smart_city/features/notification/presentation/views/notification_view.dart';
 
@@ -18,7 +19,7 @@ class HomePagesView extends StatelessWidget {
       controller: pageController,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        homeView(),
+        HomeView(),
         const NotificationView(),
         const Center(
           child: Text(
