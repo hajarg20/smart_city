@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:smart_city/core/config/gried_view_home_items.dart';
-import 'package:smart_city/features/notification/presentation/views/notification_view.dart';
-import 'package:smart_city/features/profile/presentation/views/profile_view.dart';
 
 class HomeGridview extends StatelessWidget {
-  final Function(int) onNavTap;
+  final void Function(int) onNavTap;
 
   const HomeGridview({super.key, required this.onNavTap});
 
-  void _navigateToPage(BuildContext context, int index) {
-    switch (index) {
-      // case 0:
-      //   Navigator.pushNamed(context, UtilsView.routeName);
-      // break;
-      // case 1:
-      //   Navigator.pushNamed(context, ComplaintsView.routeName);
-      //   break;
+  /// Map grid index -> page index in HomePagesView (Home=0, Notification=1, Profile=2)
+  int _mapGridIndexToPageIndex(int gridIndex) {
+    // Adjust mapping to match your desired behavior:
+    // gridIndex 0 -> Utils  (here we keep on page 0 or open separate screen later)
+    // gridIndex 1 -> Complaints (same as above)
+    // gridIndex 2 -> Notifications -> page index 1
+    // gridIndex 3 -> Profile -> page index 2
+    switch (gridIndex) {
       case 2:
-        Navigator.pushNamed(context, NotificationView.routeName);
-        break;
+        return 1; // Notifications page
       case 3:
-        Navigator.pushNamed(context, ProfileView.routeName);
-        break;
+        return 2; // Profile page
       default:
-        break;
+        return 0; // default to Home (or change to open new route)
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final items = GridViewItems.gridItems;
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -38,11 +35,14 @@ class HomeGridview extends StatelessWidget {
         mainAxisSpacing: 16,
         childAspectRatio: 1.1,
       ),
-      itemCount: GridViewItems.gridItems.length,
+      itemCount: items.length,
       itemBuilder: (context, index) {
-        final item = GridViewItems.gridItems[index];
+        final item = items[index];
         return GestureDetector(
-          onTap: () => _navigateToPage(context, index),
+          onTap: () {
+            final pageIndex = _mapGridIndexToPageIndex(index);
+            onNavTap(pageIndex);
+          },
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,

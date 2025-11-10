@@ -22,8 +22,10 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const ProfileView());
     case EditProfileView.routeName:
       return MaterialPageRoute(builder: (context) => const EditProfileView());
-    case homeView.routeName:
-      return MaterialPageRoute(builder: (context) => const homeView());
+    case HomeView.routeName:
+      return MaterialPageRoute(
+        builder: (context) => HomeView(onNavTap: (index) {}),
+      );
     case NotificationView.routeName:
       return MaterialPageRoute(builder: (context) => const NotificationView());
 

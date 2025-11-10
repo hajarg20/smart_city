@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:smart_city/features/home/presentation/views/home_view.dart';
+import 'package:smart_city/features/notification/presentation/views/notification_view.dart';
 
 class HomePagesView extends StatelessWidget {
   final PageController pageController;
+  final void Function(int) onNavTap;
 
-  const HomePagesView({super.key, required this.pageController});
+  const HomePagesView({
+    super.key,
+    required this.pageController,
+    required this.onNavTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return PageView(
       controller: pageController,
       physics: const NeverScrollableScrollPhysics(),
-      children: const [
+      children: [
         homeView(),
-        Center(
+        const NotificationView(),
+        const Center(
           child: Text(
-            '⭐ Utils',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Center(
-          child: Text(
-            '🔔 Notifications',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Center(
-          child: Text(
-            '👤 Profile',
+            'Profile',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),

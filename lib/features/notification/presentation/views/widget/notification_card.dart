@@ -47,11 +47,6 @@ class NotificationCard extends StatelessWidget {
                     fontSize: 15,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'New update available',
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
-                ),
               ],
             ),
           ),

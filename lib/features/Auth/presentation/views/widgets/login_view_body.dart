@@ -53,9 +53,21 @@ class LoginViewBody extends StatelessWidget {
                     color: AppColors.primaryColor,
                     text: 'Log In',
                     onPressed: () {
-                      Navigator.pushNamed(context, homeView.routeName);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (_) => HomeView(
+                                onNavTap: (index) {
+                                  // Handle navigation tap if needed
+                                  print("Tapped page: $index");
+                                },
+                              ),
+                        ),
+                      );
                     },
                   ),
+
                   SizedBox(height: 24.h),
                   const DividerOr(),
                   SizedBox(height: 24.h),

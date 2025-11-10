@@ -6,7 +6,7 @@ import 'package:smart_city/core/widgets/custom_appbar.dart';
 import 'package:smart_city/features/Home/presentation/views/widgets/home_gridView.dart';
 
 class HomeViewBody extends StatefulWidget {
-  const HomeViewBody({super.key});
+  const HomeViewBody({super.key, required void Function(int p1) onNavTap});
 
   @override
   State<HomeViewBody> createState() => _HomeViewBodyState();
