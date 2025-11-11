@@ -6,6 +6,21 @@ class HomeGridview extends StatelessWidget {
 
   const HomeGridview({super.key, required this.onNavTap});
 
+  int _mapGridIndexToPageIndex(int gridIndex) {
+    switch (gridIndex) {
+      case 0:
+        return 1;
+      case 1:
+        return 1;
+      case 2:
+        return 2;
+      case 3:
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = GridViewItems.gridItems;
@@ -22,7 +37,10 @@ class HomeGridview extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = items[index];
         return GestureDetector(
-          onTap: () => onNavTap(index),
+          onTap: () {
+            final pageIndex = _mapGridIndexToPageIndex(index);
+            onNavTap(pageIndex); // → التنقل الصحيح
+          },
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
