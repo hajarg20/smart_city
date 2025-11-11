@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
 import 'package:smart_city/core/widgets/custom_button.dart';
+import 'package:smart_city/features/complaints/presentation/views/complaints_view.dart';
 import 'package:smart_city/features/payment/presentation/views/widgets/label_value_row.dart';
 
 class BillDetailsViewBody extends StatelessWidget {
@@ -72,9 +73,10 @@ class BillDetailsViewBody extends StatelessWidget {
                   SizedBox(height: 15.h),
                   CustomButton(
                     text: 'Report a Problem',
-                    color: AppColors.lightprimaryColor,
+                    color: Colors.white,
                     textColor: AppColors.secondaryColor,
                     onPressed: () {
+                      Navigator.pushNamed(context, ComplaintsView.routeName);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Opening complaint form...'),
