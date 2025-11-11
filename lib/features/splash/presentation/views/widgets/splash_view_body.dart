@@ -75,11 +75,19 @@ class _SplashViewBodyState extends State<SplashViewBody>
     super.dispose();
   }
 
+  // main.dart (تأكد من أن Splash ينتقل إلى Onboarding أو Login)
   void _navigateNext() {
     bool isOnboardingSeen = Prefs.getBool('isonBoardingSeen');
+    bool isLoggedIn = Prefs.getBool('isLoggedIn');
+
     Future.delayed(const Duration(milliseconds: 3000), () {
       if (mounted) {
-        if (isOnboardingSeen) {
+        if (isLoggedIn) {
+          Navigator.pushReplacementNamed(
+            context,
+            '/main',
+          ); // مباشرة إلى MainLayout
+        } else if (isOnboardingSeen) {
           Navigator.pushReplacementNamed(context, SignupView.routeName);
         } else {
           Navigator.pushReplacementNamed(context, OnboardingView.routeName);

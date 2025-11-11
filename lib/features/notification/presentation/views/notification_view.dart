@@ -6,6 +6,6 @@ class NotificationView extends StatelessWidget {
   static const routeName = 'NotificationView';
   @override
   Widget build(BuildContext context) {
-    return NotificationViewBody();
+    return Scaffold(body: NotificationViewBody());
   }
 }

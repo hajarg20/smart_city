@@ -1,3 +1,4 @@
+// core/layout/main_layout.dart
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_city/core/utils/page_view.dart';
@@ -16,10 +17,13 @@ class _MainLayoutState extends State<MainLayout> {
     index: 0,
   );
 
-  void _onNavTap(int index) {
-    // update page view and notch controller
-    _pageController.jumpToPage(index);
+  void _onPageChanged(int index) {
     _navController.index = index;
+    setState(() {});
+  }
+
+  void _onNavTap(int index) {
+    _pageController.jumpToPage(index);
   }
 
   @override
@@ -34,7 +38,8 @@ class _MainLayoutState extends State<MainLayout> {
       extendBody: true,
       body: HomePagesView(
         pageController: _pageController,
-        onNavTap: _onNavTap, // pass callback to pages
+        onPageChanged: _onPageChanged,
+        onNavTap: _onNavTap,
       ),
       bottomNavigationBar: CustomBottomNavBar(
         controller: _navController,

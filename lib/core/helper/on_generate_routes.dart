@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:smart_city/core/utils/main_layout.dart';
 import 'package:smart_city/features/Auth/presentation/views/login_view.dart';
 import 'package:smart_city/features/Auth/presentation/views/signup_view.dart';
 import 'package:smart_city/features/Home/presentation/views/home_view.dart';
 import 'package:smart_city/features/bills/presentation/views/bill_details_view.dart';
 import 'package:smart_city/features/bills/presentation/views/bills_view.dart';
 import 'package:smart_city/features/citizen%20dashoard/presentation/views/citizen_dashboard_view.dart';
+import 'package:smart_city/features/citizen%20dashoard/presentation/views/electricty_dashboard_view.dart';
+import 'package:smart_city/features/citizen%20dashoard/presentation/views/water_dashboard_view.dart';
 import 'package:smart_city/features/complaints/presentation/views/complaints_view.dart';
 import 'package:smart_city/features/notification/presentation/views/notification_view.dart';
 import 'package:smart_city/features/onboarding/presentation/views/onboarding_view.dart';
@@ -41,7 +44,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const PaymentConfirmationView());
 
     case HomeView.routeName:
-      return MaterialPageRoute(builder: (_) => const HomeView());
+      return MaterialPageRoute(
+        builder: (_) => HomeView(onNavTap: (int index) {}),
+      );
 
     case NotificationView.routeName:
       return MaterialPageRoute(builder: (_) => const NotificationView());
@@ -56,6 +61,14 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const ComplaintsView());
     case CitizenDashboardView.routeName:
       return MaterialPageRoute(builder: (_) => const CitizenDashboardView());
+    case ElectricityDashboardView.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const ElectricityDashboardView(),
+      );
+    case WaterDashboardView.routeName:
+      return MaterialPageRoute(builder: (_) => const WaterDashboardView());
+    case '/main':
+      return MaterialPageRoute(builder: (_) => const MainLayout());
 
     default:
       return MaterialPageRoute(

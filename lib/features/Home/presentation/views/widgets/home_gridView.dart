@@ -6,23 +6,6 @@ class HomeGridview extends StatelessWidget {
 
   const HomeGridview({super.key, required this.onNavTap});
 
-  /// Map grid index -> page index in HomePagesView (Home=0, Notification=1, Profile=2)
-  int _mapGridIndexToPageIndex(int gridIndex) {
-    // Adjust mapping to match your desired behavior:
-    // gridIndex 0 -> Utils  (here we keep on page 0 or open separate screen later)
-    // gridIndex 1 -> Complaints (same as above)
-    // gridIndex 2 -> Notifications -> page index 1
-    // gridIndex 3 -> Profile -> page index 2
-    switch (gridIndex) {
-      case 2:
-        return 1; // Notifications page
-      case 3:
-        return 2; // Profile page
-      default:
-        return 0; // default to Home (or change to open new route)
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final items = GridViewItems.gridItems;
@@ -39,10 +22,7 @@ class HomeGridview extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = items[index];
         return GestureDetector(
-          onTap: () {
-            final pageIndex = _mapGridIndexToPageIndex(index);
-            onNavTap(pageIndex);
-          },
+          onTap: () => onNavTap(index),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -61,6 +41,7 @@ class HomeGridview extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
+                    color: item['bgColor'],
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(
@@ -77,7 +58,6 @@ class HomeGridview extends StatelessWidget {
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Colors.grey.shade800,
-                    height: 1.2,
                   ),
                 ),
               ],

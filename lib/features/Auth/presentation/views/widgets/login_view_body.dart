@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_city/core/services/shared_pref_singleton.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
 import 'package:smart_city/features/Auth/presentation/views/widgets/Login_form.dart';
 import 'package:smart_city/features/Home/presentation/views/home_view.dart';
@@ -49,22 +50,14 @@ class LoginViewBody extends StatelessWidget {
                   SizedBox(height: 20.h),
                   const LoginForm(),
                   SizedBox(height: 20.h),
+                  // LoginViewBody.dart
                   CustomButton(
                     color: AppColors.primaryColor,
                     text: 'Log In',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (_) => HomeView(
-                                onNavTap: (index) {
-                                  // Handle navigation tap if needed
-                                  print("Tapped page: $index");
-                                },
-                              ),
-                        ),
-                      );
+                      Prefs.setBool('isLoggedIn', true);
+
+                      Navigator.pushReplacementNamed(context, '/main');
                     },
                   ),
 

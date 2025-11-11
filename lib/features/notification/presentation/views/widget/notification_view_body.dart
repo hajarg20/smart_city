@@ -1,7 +1,5 @@
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
-import 'package:smart_city/core/widgets/bottom_nav_bar.dart';
 import 'package:smart_city/core/widgets/custom_appbar.dart';
 import 'package:smart_city/features/notification/presentation/views/widget/delete_notfi.dart';
 import 'package:smart_city/features/notification/presentation/views/widget/notifcation_snackbar.dart';
@@ -28,6 +26,7 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    // ⚠️ NO SCAFFOLD HERE - MainLayout provides it!
     return Column(
       children: [
         const CustomAppbar(

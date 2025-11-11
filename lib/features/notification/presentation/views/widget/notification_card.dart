@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
+import 'package:smart_city/core/utils/app_text_styls.dart';
 
 class NotificationCard extends StatelessWidget {
   final String title;
@@ -39,15 +40,7 @@ class NotificationCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
+              children: [Text(title, style: AppTextStyles.semiBold16)],
             ),
           ),
         ],
