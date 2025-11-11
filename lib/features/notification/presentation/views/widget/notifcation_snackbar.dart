@@ -1,14 +1,29 @@
+// features/notification/presentation/views/widgets/notification_snackbar.dart
 import 'package:flutter/material.dart';
-import 'package:smart_city/core/utils/app_colors.dart';
 
 class NotificationSnackbar {
-  static void show(BuildContext context, {required String message}) {
+  static void show(
+    BuildContext context, {
+    required String message,
+    String? actionLabel,
+    VoidCallback? onUndo,
+  }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.secondaryColor,
-        duration: const Duration(seconds: 1),
+        backgroundColor: Colors.grey.shade800,
+        action:
+            actionLabel != null
+                ? SnackBarAction(
+                  label: actionLabel,
+                  textColor: Colors.yellow,
+                  onPressed: () {
+                    onUndo?.call();
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  },
+                )
+                : null,
       ),
     );
   }

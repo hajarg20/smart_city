@@ -26,7 +26,6 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    // ⚠️ NO SCAFFOLD HERE - MainLayout provides it!
     return Column(
       children: [
         const CustomAppbar(
@@ -37,10 +36,10 @@ class _NotificationViewBodyState extends State<NotificationViewBody> {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: ListView.separated(
               itemCount: _notifications.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
               itemBuilder: (context, index) {
                 final notification = _notifications[index];
                 return Dismissible(
