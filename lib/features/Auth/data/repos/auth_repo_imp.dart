@@ -7,8 +7,8 @@ import 'package:smart_city/features/Auth/data/models/sign_in_model.dart';
 
 import 'package:smart_city/features/Auth/data/models/sign_up_model.dart';
 import 'package:smart_city/features/Auth/data/models/user_model.dart';
-import 'package:smart_city/features/Auth/presentation/views/domain/entities/user_entity.dart';
-import 'package:smart_city/features/Auth/presentation/views/domain/repos/auth_repo.dart';
+import 'package:smart_city/features/Auth/domain/entities/user_entity.dart';
+import 'package:smart_city/features/Auth/domain/repos/auth_repo.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final ApiConsumer api;

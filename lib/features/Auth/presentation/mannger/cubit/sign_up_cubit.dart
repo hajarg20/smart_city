@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_city/features/Auth/presentation/views/domain/repos/auth_repo.dart';
+import 'package:smart_city/features/Auth/domain/repos/auth_repo.dart';
 
 part 'sign_up_state.dart';
 

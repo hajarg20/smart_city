@@ -1,4 +1,4 @@
-import 'package:smart_city/features/Auth/presentation/views/domain/entities/user_entity.dart';
+import 'package:smart_city/features/Auth/domain/entities/user_entity.dart';
 
 class UserModel {
   final int id;

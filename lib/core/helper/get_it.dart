@@ -9,7 +9,7 @@ import 'package:smart_city/core/database/cache/cache_helper.dart';
 import 'package:smart_city/features/Auth/data/repos/auth_repo_imp.dart';
 import 'package:smart_city/features/Auth/presentation/mannger/cubit/sign_in_cubit.dart';
 import 'package:smart_city/features/Auth/presentation/mannger/cubit/sign_up_cubit.dart';
-import 'package:smart_city/features/Auth/presentation/views/domain/repos/auth_repo.dart';
+import 'package:smart_city/features/Auth/domain/repos/auth_repo.dart';
 
 final getIt = GetIt.instance;
 
