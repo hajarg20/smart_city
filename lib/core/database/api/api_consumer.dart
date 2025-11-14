@@ -1,18 +1,17 @@
+// lib/core/database/api/api_consumer.dart
 import 'package:smart_city/core/database/api/end_ponits.dart';
 
 abstract class ApiConsumer {
   final String baseUrl = EndPoints.baseUrl;
 
-  /// GET Request
-  Future<dynamic> get(
+  Future<Map<String, dynamic>> get(
     String path, {
     Map<String, dynamic>? queryParameters,
     Map<String, String>? headers,
     bool requireAuth = false,
   });
 
-  /// POST Request
-  Future<dynamic> post(
+  Future<Map<String, dynamic>> post(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -21,10 +20,8 @@ abstract class ApiConsumer {
     bool requireAuth = false,
   });
 
-  /// PUT Request
-  Future<dynamic> put(
+  Future<Map<String, dynamic>> put(
     String path, {
-
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Map<String, String>? headers,
@@ -32,10 +29,8 @@ abstract class ApiConsumer {
     bool requireAuth = false,
   });
 
-  /// DELETE Request
-  Future<dynamic> delete(
+  Future<Map<String, dynamic>> delete(
     String path, {
-    dynamic data,
     Map<String, dynamic>? queryParameters,
     Map<String, String>? headers,
     bool requireAuth = false,

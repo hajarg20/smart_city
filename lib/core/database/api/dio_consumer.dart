@@ -1,9 +1,10 @@
 // lib/core/database/api/dio_consumer.dart
-
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_city/core/database/api/api_consumer.dart';
 import 'package:smart_city/core/database/api/end_ponits.dart';
+import 'package:smart_city/core/errors/error_model.dart';
 import 'package:smart_city/core/errors/expentions.dart';
 import 'package:smart_city/core/utils/app_strings.dart';
 
@@ -14,8 +15,8 @@ class DioConsumer extends ApiConsumer {
   DioConsumer({required this.dio, required this.prefs}) {
     dio.options
       ..baseUrl = EndPoints.baseUrl
-      ..connectTimeout = const Duration(seconds: 10)
-      ..receiveTimeout = const Duration(seconds: 10);
+      ..connectTimeout = const Duration(seconds: 30)
+      ..receiveTimeout = const Duration(seconds: 30);
 
     dio.interceptors.add(
       InterceptorsWrapper(
@@ -32,29 +33,54 @@ class DioConsumer extends ApiConsumer {
     );
   }
 
-  @override
-  Future<dynamic> get(
-    String path, {
-    Object? data,
-    Map<String, dynamic>? queryParameters,
-    Map<String, String>? headers,
-    bool requireAuth = true,
-  }) async {
-    try {
-      final response = await dio.get(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: Options(extra: {'requireAuth': requireAuth}, headers: headers),
-      );
-      return response.data;
-    } on DioException catch (e) {
-      handleDioException(e);
+  // ────────────────────── HELPER: Convert to Map ──────────────────────
+  Map<String, dynamic> _toMap(dynamic data) {
+    if (data is Map<String, dynamic>) return data;
+    if (data is String) {
+      try {
+        return Map<String, dynamic>.from(jsonDecode(data));
+      } catch (_) {
+        return {'message': data};
+      }
     }
+    return {'data': data};
   }
 
+  // ────────────────────── HANDLE DIO EXCEPTION ──────────────────────
+  Never handleDioException(DioException e) {
+    final data = e.response?.data;
+    final map = _toMap(data);
+
+    // إذا كان statusCode >= 400
+    if (e.response?.statusCode != null && e.response!.statusCode! >= 400) {
+      throw ServerException(ErrorModel.fromJson(map));
+    }
+
+    // إذا كان 200 لكن status: error
+    if (map['status']?.toString().toLowerCase() == 'error') {
+      throw ServerException(ErrorModel.fromJson(map));
+    }
+
+    // Connection reset by peer
+    if (e.type == DioExceptionType.connectionError ||
+        e.message?.contains('reset by peer') == true ||
+        e.message?.contains('SocketException') == true) {
+      throw ServerException(
+        ErrorModel(
+          errorMessage:
+              'فشل الاتصال بالخادم. تحقق من الإنترنت أو عنوان الخادم.',
+        ),
+      );
+    }
+
+    throw ServerException(
+      ErrorModel(errorMessage: e.message ?? 'حدث خطأ غير متوقع'),
+    );
+  }
+
+  // ────────────────────── POST ──────────────────────
   @override
-  Future<dynamic> post(
+  Future<Map<String, dynamic>> post(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -67,16 +93,47 @@ class DioConsumer extends ApiConsumer {
         path,
         data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
-        options: Options(extra: {'requireAuth': requireAuth}, headers: headers),
+        options: Options(
+          extra: {'requireAuth': requireAuth},
+          headers: headers,
+          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+        ),
       );
-      return response.data;
+      return _toMap(response.data);
     } on DioException catch (e) {
       handleDioException(e);
     }
   }
 
+  // ────────────────────── GET ──────────────────────
   @override
-  Future<dynamic> put(
+  Future<Map<String, dynamic>> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Map<String, String>? headers,
+    bool requireAuth = true,
+  }) async {
+    try {
+      final response = await dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: Options(
+          extra: {'requireAuth': requireAuth},
+          headers: headers,
+          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+        ),
+      );
+      return _toMap(response.data);
+    } on DioException catch (e) {
+      handleDioException(e);
+    }
+  }
+
+  // ────────────────────── PUT ──────────────────────
+  @override
+  Future<Map<String, dynamic>> put(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -89,18 +146,23 @@ class DioConsumer extends ApiConsumer {
         path,
         data: isFormData ? FormData.fromMap(data) : data,
         queryParameters: queryParameters,
-        options: Options(extra: {'requireAuth': requireAuth}, headers: headers),
+        options: Options(
+          extra: {'requireAuth': requireAuth},
+          headers: headers,
+          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+        ),
       );
-      return response.data;
+      return _toMap(response.data);
     } on DioException catch (e) {
       handleDioException(e);
     }
   }
 
+  // ────────────────────── DELETE ──────────────────────
   @override
-  Future<dynamic> delete(
+  Future<Map<String, dynamic>> delete(
     String path, {
-    Object? data,
     Map<String, dynamic>? queryParameters,
     Map<String, String>? headers,
     bool requireAuth = true,
@@ -108,11 +170,15 @@ class DioConsumer extends ApiConsumer {
     try {
       final response = await dio.delete(
         path,
-        data: data,
         queryParameters: queryParameters,
-        options: Options(extra: {'requireAuth': requireAuth}, headers: headers),
+        options: Options(
+          extra: {'requireAuth': requireAuth},
+          headers: headers,
+          sendTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
+        ),
       );
-      return response.data;
+      return _toMap(response.data);
     } on DioException catch (e) {
       handleDioException(e);
     }

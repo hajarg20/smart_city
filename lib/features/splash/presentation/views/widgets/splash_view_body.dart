@@ -76,18 +76,18 @@ class _SplashViewBodyState extends State<SplashViewBody>
   }
 
   void _navigateNext() {
-    bool isOnboardingSeen = Prefs.getBool('isonBoardingSeen');
-    bool isLoggedIn = Prefs.getBool('isLoggedIn');
+    bool isOnboardingSeen = Prefs.getBool('isonBoardingSeen') ?? false;
+    bool isLoggedIn = Prefs.getBool('isLoggedIn') ?? false;
 
     Future.delayed(const Duration(milliseconds: 3000), () {
-      if (mounted) {
-        if (isLoggedIn) {
-          Navigator.pushReplacementNamed(context, '/main');
-        } else if (isOnboardingSeen) {
-          Navigator.pushReplacementNamed(context, SignupView.routeName);
-        } else {
-          Navigator.pushReplacementNamed(context, OnboardingView.routeName);
-        }
+      if (!mounted) return;
+
+      if (isLoggedIn) {
+        Navigator.pushReplacementNamed(context, '/main');
+      } else if (!isOnboardingSeen) {
+        Navigator.pushReplacementNamed(context, OnboardingView.routeName);
+      } else {
+        Navigator.pushReplacementNamed(context, SignupView.routeName);
       }
     });
   }
