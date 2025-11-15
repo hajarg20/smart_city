@@ -29,6 +29,7 @@ class LoginForm extends StatelessWidget {
           controller: cubit.passwordController,
         ),
         SizedBox(height: 8.h),
+        Text('forget password?'),
       ],
     );
   }

@@ -30,8 +30,10 @@ class PaymentConfirmationViewBody extends StatelessWidget {
                 MaterialPageRoute(
                   builder:
                       (context) => const AuthDialog(
-                        Title: 'Payment Successful',
+                        title: 'Payment Successful',
                         subTitle: 'Thank you for using our services',
+                        // Title: 'Payment Successful',
+                        // subTitle: 'Thank you for using our services',
                       ),
                 ),
               );

@@ -77,14 +77,15 @@ class SignupViewBody extends StatelessWidget {
   }
 
   void _handleState(BuildContext context, SignUpState state) {
+    // في _handleState
     if (state is SignUpSuccess) {
       showDialog(
         context: context,
         barrierDismissible: false,
         builder:
-            (context) => const AuthDialog(
+            (_) => const AuthDialog(
+              title: 'Account Created Successfully!',
               subTitle: 'You can log in now!',
-              Title: 'Account Created Successfully!',
             ),
       );
     } else if (state is SignUpFailure) {
