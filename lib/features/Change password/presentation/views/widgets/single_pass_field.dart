@@ -9,6 +9,7 @@ class SinglePasswordField extends StatelessWidget {
   final VoidCallback onToggle;
 
   const SinglePasswordField({
+    super.key,
     required this.controller,
     required this.hint,
     required this.showPass,

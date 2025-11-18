@@ -4,7 +4,15 @@ import 'package:smart_city/core/utils/app_text_styls.dart';
 
 class NotificationCard extends StatefulWidget {
   final String title;
-  const NotificationCard({super.key, required this.title});
+  final Color backgroundColor;
+  const NotificationCard({
+    super.key,
+    required this.title,
+    required this.backgroundColor,
+    required String message,
+    required String date,
+    required isRead,
+  });
 
   @override
   State<NotificationCard> createState() => _NotificationCardState();

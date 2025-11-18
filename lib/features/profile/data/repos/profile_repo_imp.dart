@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_city/core/database/api/api_consumer.dart';
 import 'package:smart_city/core/database/api/end_ponits.dart';
+import 'package:smart_city/core/database/cache/cache_helper.dart';
 import 'package:smart_city/core/entities/user_entity.dart';
 import 'package:smart_city/core/errors/expentions.dart';
 import 'package:smart_city/core/errors/failure.dart';
@@ -61,6 +62,9 @@ class ProfileRepoImpl implements ProfileRepo {
       if (userJson == null || userJson.isEmpty) {
         return Left(ServerFailure("Invalid response format in updateUser"));
       }
+      print("🔵 PROFILE API CALL");
+      print("URL = ${EndPoints.me}"); // أو Route اللي عندك
+      print("Token = ${CacheHelper.getData(key: 'token')}");
 
       final user = UserModel.fromJson(userJson).toEntity();
       return Right(user);

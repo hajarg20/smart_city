@@ -7,6 +7,7 @@ class NotificationSnackbar {
     required String message,
     String? actionLabel,
     VoidCallback? onUndo,
+    required MaterialColor backgroundColor,
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

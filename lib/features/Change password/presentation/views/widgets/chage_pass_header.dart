@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/utils/app_text_styls.dart';
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection();
+  const HeaderSection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:smart_city/core/widgets/custom_button.dart';
 import 'package:smart_city/features/Change%20password/presentation/manger/cubit/change_password_cubit.dart';
 
 class ConfirmButton extends StatelessWidget {
-  const ConfirmButton();
+  const ConfirmButton({super.key});
 
   @override
   Widget build(BuildContext context) {
