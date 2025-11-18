@@ -1,5 +1,3 @@
-// lib/core/database/api/end_ponits.dart
-
 class EndPoints {
   static const String baseUrl = "http://smartcity.tryasp.net/";
 

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/utils/app_text_styls.dart';
 
 class PasswordStrengthHint extends StatelessWidget {
-  const PasswordStrengthHint();
+  const PasswordStrengthHint({super.key});
 
   @override
   Widget build(BuildContext context) {

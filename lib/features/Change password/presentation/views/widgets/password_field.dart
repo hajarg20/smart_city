@@ -6,7 +6,7 @@ import 'package:smart_city/features/Change%20password/presentation/views/widgets
 import 'package:smart_city/features/Change%20password/presentation/views/widgets/single_pass_field.dart';
 
 class PasswordFields extends StatefulWidget {
-  const PasswordFields();
+  const PasswordFields({super.key});
 
   @override
   State<PasswordFields> createState() => _PasswordFieldsState();
