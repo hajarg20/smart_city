@@ -1,8 +1,10 @@
+// lib/features/bills/presentation/views/widgets/bill_card.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smart_city/features/bills/presentation/manager/cubit/bills_cubit.dart';
 import 'package:smart_city/features/bills/presentation/views/bill_details_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_city/features/bills/presentation/cubit/bills_cubit.dart';
 import 'package:smart_city/features/bills/presentation/views/widgets/status_text.dart';
 import 'package:smart_city/features/bills/presentation/views/widgets/view_details_button.dart';
 
@@ -14,6 +16,7 @@ class BillCard extends StatelessWidget {
   final Color iconColor;
   final bool isPaid;
   final int id;
+  final VoidCallback? onPayPressed;
 
   const BillCard({
     super.key,
@@ -23,7 +26,8 @@ class BillCard extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     required this.isPaid,
-    required this.id, Future<Null> Function()? onPayPressed,
+    required this.id,
+    this.onPayPressed,
   });
 
   @override
@@ -84,15 +88,17 @@ class BillCard extends StatelessWidget {
                   );
 
                   if (result == true) {
-                    // reload bills list after successful payment
                     try {
-                      context.read<BillsCubit>().loadBills(1);
+                      context.read<BillsCubit>().getMyBills(1);
                     } catch (_) {}
                   }
                 },
               ),
             ],
           ),
+
+          if (!isPaid && onPayPressed != null)
+            TextButton(onPressed: onPayPressed, child: const Text("Pay Now")),
         ],
       ),
     );

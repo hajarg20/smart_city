@@ -1,32 +1,29 @@
 class EndPoints {
-  static const String baseUrl = "http://smartcity.tryasp.net/";
+  static const String baseUrl = "http://smartcity.tryasp.net";
 
-  // ── Authentication
   static const String register = "/api/Authentication/register";
   static const String login = "/api/Authentication/login";
   static const String changePassword = "/api/Authentication/change-password";
 
-  // ── User
-  static const String me = "api/users/me";
+  static const String me = "/api/users/me";
 
-  // ── Bills (Citizen)
-  static const String myBills = "/api/bills/my-bills/{citizenId}";
-  static const String billDetail = "/api/bills/{id}";
-  static const String payBill = "/api/bills/{id}/pay";
+  static String myBills(int citizenId) => "/api/bills/my-bills/$citizenId";
+  static String billDetail(int id) => "/api/bills/$id";
+  static String payBill(int id) => "/api/bills/$id/pay";
 
-  // ── Complaints
-  static const String createComplaint = "/api/complaints?citizenId={citizenId}";
-  static const String myComplaints = "/api/complaints/my/{citizenId}";
+  static String createComplaint(int citizenId) =>
+      "/api/complaints?citizenId=$citizenId";
+  static String myComplaints(int citizenId) => "/api/complaints/my/$citizenId";
 
-  // ── Suggestions
-  static const String suggestions = "/api/Suggestions";
-  static const String suggestionDetail = "/api/Suggestions/{id}";
-  static const String createSuggestion = "/api/Suggestions";
-  static const String updateSuggestion = "/api/Suggestions/{id}";
-  static const String deleteSuggestion = "/api/Suggestions/{id}";
+  static const String suggestionsList = "/api/Suggestions"; // GET all
+  static String suggestionDetail(int id) => "/api/Suggestions/$id";
+  static const String createSuggestion = "/api/Suggestions"; // POST
+  static String updateSuggestion(int id) => "/api/Suggestions/$id"; // PUT
+  static String deleteSuggestion(int id) => "/api/Suggestions/$id"; // DELETE
 
   // ── Notifications
-  static const String myNotifications = "/api/Notification/my/{citizenId}";
+  static String myNotifications(int citizenId) =>
+      "/api/Notification/my/$citizenId";
 }
 
 class ApiKey {

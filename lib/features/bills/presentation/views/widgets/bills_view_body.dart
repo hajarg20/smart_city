@@ -1,10 +1,11 @@
+// lib/features/bills/presentation/views/widgets/bills_view_body.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/features/bills/data/models/bill_model.dart';
-import 'package:smart_city/features/bills/presentation/cubit/bills_cubit.dart';
+import 'package:smart_city/features/bills/presentation/manager/cubit/bills_cubit.dart';
 import 'package:smart_city/features/bills/presentation/views/widgets/bill_card.dart';
-import 'package:smart_city/features/payment/presentation/views/payment_method_view.dart';
 
 class BillsViewBody extends StatelessWidget {
   const BillsViewBody({super.key});
@@ -15,8 +16,22 @@ class BillsViewBody extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
       child: BlocConsumer<BillsCubit, BillsState>(
         listener: (context, state) {
-          if (state is BillsLoaded && state.bills.isEmpty) {
-            Navigator.pushNamed(context, PaymentMethodView.routeName);
+          if (state is BillPaymentSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Bill paid successfully!"),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+
+          if (state is BillPaymentError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
         builder: (context, state) {
@@ -27,22 +42,22 @@ class BillsViewBody extends StatelessWidget {
           if (state is BillsError) {
             return Center(
               child: Text(
-                state.msg,
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                state.message,
+                style: TextStyle(color: Colors.red, fontSize: 16.sp),
+                textAlign: TextAlign.center,
               ),
             );
           }
 
           if (state is BillsLoaded) {
-            final bills = state.bills;
+            final List<BillModel> bills = state.bills;
 
             if (bills.isEmpty) {
               return const Center(
-                child: Text("No Bills Found.", style: TextStyle(fontSize: 14, color: Colors.grey)),
+                child: Text(
+                  "No bills available at the moment",
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
               );
             }
 
@@ -50,24 +65,20 @@ class BillsViewBody extends StatelessWidget {
               itemCount: bills.length,
               separatorBuilder: (_, __) => SizedBox(height: 15.h),
               itemBuilder: (context, index) {
-                final bill = bills[index] as BillModel;
-                final iconData = _iconForService(bill.type);
-                final iconColor = _iconColorForService(bill.type);
+                final bill = bills[index];
 
                 return BillCard(
                   id: bill.id,
-                  service: bill.type,
+                  service: bill.type ?? "Bill",
                   month: _formatDate(bill.issueDate),
-                  amount: "${bill.amount} EGP",
-                  icon: iconData,
-                  iconColor: iconColor,
+                  amount: "${bill.amount.toStringAsFixed(2)} EGP",
+                  icon: _iconForService(bill.type),
+                  iconColor: _iconColorForService(bill.type),
                   isPaid: bill.isPaid,
                   onPayPressed:
                       bill.isPaid
                           ? null
-                          : () async {
-                              context.read<BillsCubit>().pay(bill.id);
-                            },
+                          : () => context.read<BillsCubit>().payBill(bill.id),
                 );
               },
             );
@@ -79,8 +90,8 @@ class BillsViewBody extends StatelessWidget {
     );
   }
 
-  IconData _iconForService(String type) {
-    switch (type.toLowerCase()) {
+  IconData _iconForService(String? type) {
+    switch (type?.toLowerCase()) {
       case 'electricity':
         return Icons.flash_on;
       case 'water':
@@ -92,8 +103,8 @@ class BillsViewBody extends StatelessWidget {
     }
   }
 
-  Color _iconColorForService(String type) {
-    switch (type.toLowerCase()) {
+  Color _iconColorForService(String? type) {
+    switch (type?.toLowerCase()) {
       case 'electricity':
         return const Color(0xFFFED766);
       case 'water':
@@ -105,12 +116,9 @@ class BillsViewBody extends StatelessWidget {
     }
   }
 
+  // Corrected: now accepts DateTime instead of String
   String _formatDate(DateTime date) {
-    return "${_monthName(date.month)} ${date.year}";
-  }
-
-  String _monthName(int month) {
-    const names = [
+    const months = [
       "January",
       "February",
       "March",
@@ -124,6 +132,7 @@ class BillsViewBody extends StatelessWidget {
       "November",
       "December",
     ];
-    return names[month - 1];
+
+    return "${months[date.month - 1]} ${date.year}";
   }
 }

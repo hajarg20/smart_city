@@ -1,6 +1,6 @@
 class BillEntity {
   final int id;
-  final String type;
+  final String? type;
   final double amount;
   final DateTime issueDate;
   final bool isPaid;

@@ -5,11 +5,30 @@ class BillModel extends BillEntity {
     required super.id,
     required super.type,
     required super.amount,
-    required super.issueDate,
+    required super.issueDate, // DateTime
     required super.isPaid,
     required super.citizenId,
   });
 
+  BillModel copyWith({
+    int? id,
+    String? type,
+    double? amount,
+    DateTime? issueDate, //  DateTime
+    bool? isPaid,
+    int? citizenId,
+  }) {
+    return BillModel(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      amount: amount ?? this.amount,
+      issueDate: issueDate ?? this.issueDate, //
+      isPaid: isPaid ?? this.isPaid,
+      citizenId: citizenId ?? this.citizenId,
+    );
+  }
+
+  // لتحويل JSON إلى BillModel
   factory BillModel.fromJson(Map<String, dynamic> json) {
     return BillModel(
       id: json["id"],
@@ -30,16 +49,5 @@ class BillModel extends BillEntity {
       "isPaid": isPaid,
       "citizenId": citizenId,
     };
-  }
-
-  BillModel copyWith({bool? isPaid}) {
-    return BillModel(
-      id: id,
-      type: type,
-      amount: amount,
-      issueDate: issueDate,
-      isPaid: isPaid ?? this.isPaid,
-      citizenId: citizenId,
-    );
   }
 }
