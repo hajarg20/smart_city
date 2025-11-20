@@ -51,7 +51,7 @@ class BillsRepoImpl implements BillsRepository {
       final Map<String, dynamic> json =
           response['data'] is Map<String, dynamic>
               ? response['data']
-              : (response is Map<String, dynamic> ? response : {});
+              : (response);
 
       final bill = BillModel.fromJson(json);
       return Right(bill);

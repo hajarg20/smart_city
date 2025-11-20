@@ -6,13 +6,17 @@ import 'package:smart_city/core/helper/on_generate_routes.dart';
 import 'package:smart_city/core/services/custom_bloc_observer.dart';
 import 'package:smart_city/core/services/shared_pref_singleton.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
+import 'package:smart_city/features/Auth/presentation/manager/cubit/sign_in_cubit.dart';
+import 'package:smart_city/features/Auth/presentation/manager/cubit/sign_up_cubit.dart';
+import 'package:smart_city/features/bills/presentation/manager/cubit/bills_cubit.dart';
+
+import 'package:smart_city/features/profile/presentation/manager/cubit/profile_cubit.dart';
 import 'package:smart_city/features/splash/presentation/views/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = CustomBlocObserver();
   await Prefs.init();
-  // await setupGetIt();
   setupGetIt();
   runApp(const SmartCity());
 }
@@ -26,15 +30,25 @@ class SmartCity extends StatelessWidget {
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'Cairo',
-          scaffoldBackgroundColor: AppColors.lightprimaryColor,
-          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => getIt<SignInCubit>()),
+          BlocProvider(create: (_) => getIt<SignUpCubit>()),
+          BlocProvider(create: (_) => getIt<ProfileCubit>()),
+          BlocProvider(create: (_) => BillsCubit(getIt())),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'Cairo',
+            scaffoldBackgroundColor: AppColors.lightprimaryColor,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primaryColor,
+            ),
+          ),
+          onGenerateRoute: onGenerateRoute,
+          initialRoute: SplashView.routeName,
         ),
-        onGenerateRoute: onGenerateRoute,
-        initialRoute: SplashView.routeName,
       ),
     );
   }
