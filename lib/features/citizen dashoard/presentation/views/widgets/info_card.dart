@@ -86,7 +86,7 @@ class InfoCard extends StatelessWidget {
                         Navigator.pushNamed(
                           context,
                           '/payment-method',
-                          arguments: bill!.id,
+                          arguments: bill.id,
                         );
                       },
                     ),
