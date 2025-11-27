@@ -41,7 +41,7 @@ class InfoCard extends StatelessWidget {
               ),
             ],
           ),
-          child: IntrinsicHeight( // ده السحر الحقيقي
+          child: IntrinsicHeight(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
