@@ -18,27 +18,26 @@ class ComplaintsCubit extends Cubit<ComplaintsState> {
     final result = await getMyComplaintsUseCase(citizenId: citizenId);
 
     result.fold(
-      (failure) => emit(ComplaintsError(failure)),
-      (complaints) => emit(ComplaintsLoaded(complaints)),
+          (failure) => emit(ComplaintsError(failure)),
+          (complaints) => emit(ComplaintsLoaded(complaints)),
     );
   }
 
   Future<void> createComplaint({
-    required int citizenId,
     required ComplaintCreateDto complaintData,
+    int? citizenId, // optional لو عايز get بعد الcreate
   }) async {
-    // emit(ComplaintsLoading()); 
+    // emit(ComplaintsLoading()); // أضفه لو عايز
 
     final result = await createComplaintUseCase(
-      citizenId: citizenId,
       complaint: complaintData,
     );
 
     result.fold(
-      (failure) => emit(ComplaintCreationFailed(failure)),
-      (_) {
+          (failure) => emit(ComplaintCreationFailed(failure)),
+          (_) {
         emit(ComplaintCreatedSuccess());
-        getMyComplaints(citizenId); 
+        if (citizenId != null) getMyComplaints(citizenId);
       },
     );
   }

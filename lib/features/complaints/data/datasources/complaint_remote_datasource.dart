@@ -1,37 +1,34 @@
-import 'package:dio/dio.dart';
+import 'package:smart_city/core/database/api/api_consumer.dart';
 import '../dtos/complaint_create_dto.dart';
 
 abstract class ComplaintRemoteDataSource {
   Future<List<dynamic>> getMyComplaints(int citizenId);
-  Future<void> createComplaint(int citizenId, ComplaintCreateDto complaint);
+  Future<void> createComplaint(ComplaintCreateDto complaint);
 }
 
 class ComplaintRemoteDataSourceImpl implements ComplaintRemoteDataSource {
-  final Dio dio;
+  final ApiConsumer api;
 
-  ComplaintRemoteDataSourceImpl(this.dio);
+  ComplaintRemoteDataSourceImpl(this.api);
 
   @override
   Future<List<dynamic>> getMyComplaints(int citizenId) async {
-    final response = await dio.get("/api/complaints/my/$citizenId"); 
+    final response = await api.get(
+      "/api/complaints/my/$citizenId",
+      requireAuth: true,
+    );
 
-    if (response.statusCode == 200) {
-      return response.data as List<dynamic>;
-    } else {
-      throw Exception("Failed to load complaints: ${response.statusCode}");
-    }
+    // الـ API بيرجّع {"status":"success","data":[...]}
+    return response['data'] as List<dynamic>;
   }
 
   @override
-  Future<void> createComplaint(int citizenId, ComplaintCreateDto complaint) async {
-    final response = await dio.post(
+  Future<void> createComplaint(ComplaintCreateDto complaint) async {
+    await api.post(
       "/api/complaints",
-      queryParameters: {'citizenId': citizenId}, 
       data: complaint.toJson(),
+      requireAuth: true, // التوكن هيتضاف تلقائي
     );
-
-    if (response.statusCode != 200) {
-      throw Exception("Failed to create complaint: ${response.statusCode}");
-    }
+    // لو السيرفر بيرجع 201 بدون body مفيش مشكلة
   }
 }

@@ -8,7 +8,6 @@ import 'package:smart_city/features/complaints/data/dtos/complaint_create_dto.da
 import 'package:smart_city/features/complaints/presentation/cubit/complaints_cubit.dart';
 import 'package:smart_city/features/complaints/presentation/cubit/complaints_state.dart';
 
-
 class ComplaintsViewBody extends StatefulWidget {
   final int citizenId = 1;
 
@@ -72,14 +71,14 @@ class _ComplaintScreenState extends State<ComplaintsViewBody> {
               ),
               const SizedBox(height: 32),
               CustomButton(
-                text: _isLoading ? 'Sending...' : 'Send', 
+                text: _isLoading ? 'Sending...' : 'Send',
                 color: AppColors.primaryColor,
                 textColor: Colors.black,
                 onPressed: () {
                   if (_isLoading || _selectedType == null || _detailsController.text.isEmpty) {
-                    return; 
+                    return;
                   }
-                  
+
                   setState(() {
                     _isLoading = true;
                   });
@@ -93,18 +92,18 @@ class _ComplaintScreenState extends State<ComplaintsViewBody> {
       ),
     );
   }
-  
+
   void _sendComplaint(BuildContext context) {
     final complaintData = ComplaintCreateDto(
-      title: _selectedType!, 
+      title: _selectedType!,
       description: _detailsController.text.trim(),
-      location: "Submitted via App - Temporary Location", 
-      imageUrl: null, 
+      location: "Submitted via App - Temporary Location",
+      imageUrl: null,
     );
 
     context.read<ComplaintsCubit>().createComplaint(
-        citizenId: widget.citizenId,
-        complaintData: complaintData,
+      complaintData: complaintData,
+      citizenId: widget.citizenId, // optional للـ get
     );
   }
 }

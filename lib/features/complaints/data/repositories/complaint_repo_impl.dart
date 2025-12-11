@@ -11,9 +11,9 @@ class ComplaintRepoImpl implements ComplaintRepository {
   ComplaintRepoImpl(this.remote);
 
   @override
-  Future<Either<String, void>> createComplaint(int citizenId, ComplaintCreateDto complaint) async {
+  Future<Either<String, void>> createComplaint(ComplaintCreateDto complaint) async {
     try {
-      await remote.createComplaint(citizenId, complaint);
+      await remote.createComplaint(complaint);
       return const Right(unit);
     } catch (e) {
       return Left(e.toString());

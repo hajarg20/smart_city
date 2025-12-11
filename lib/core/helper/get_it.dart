@@ -1,28 +1,35 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:smart_city/core/database/api/api_consumer.dart';
 import 'package:smart_city/core/database/api/dio_consumer.dart';
 import 'package:smart_city/core/database/cache/cache_helper.dart';
+
 import 'package:smart_city/features/Auth/data/repos/auth_repo_imp.dart';
 import 'package:smart_city/features/Auth/domain/repos/auth_repo.dart';
 import 'package:smart_city/features/Auth/presentation/manager/cubit/sign_in_cubit.dart';
 import 'package:smart_city/features/Auth/presentation/manager/cubit/sign_up_cubit.dart';
+
 import 'package:smart_city/features/Change%20password/data/repos/change_pass_repo_imp.dart';
 import 'package:smart_city/features/Change%20password/domain/repos/change_pass_repo.dart';
 import 'package:smart_city/features/Change%20password/presentation/manager/cubit/change_password_cubit.dart';
+
 import 'package:smart_city/features/bills/data/repositories/bills_repo_impl.dart';
 import 'package:smart_city/features/bills/domain/repositories/bills_repo.dart';
 import 'package:smart_city/features/bills/presentation/manager/cubit/bills_cubit.dart';
+
 import 'package:smart_city/features/notification/data/repos/notification_repo_imp.dart';
 import 'package:smart_city/features/notification/domain/repos/notification_repo.dart';
 import 'package:smart_city/features/notification/presentation/manger/cubit/notification_cubit.dart';
+
 import 'package:smart_city/features/complaints/data/datasources/complaint_remote_datasource.dart';
 import 'package:smart_city/features/complaints/data/repositories/complaint_repo_impl.dart';
 import 'package:smart_city/features/complaints/domain/repositories/complaint_repo.dart';
 import 'package:smart_city/features/complaints/domain/usecases/create_complaint_usecase.dart';
 import 'package:smart_city/features/complaints/domain/usecases/get_my_complaints_usecase.dart';
 import 'package:smart_city/features/complaints/presentation/cubit/complaints_cubit.dart';
+
 import 'package:smart_city/features/profile/data/repos/profile_repo_imp.dart';
 import 'package:smart_city/features/profile/domain/repos/profile_repo.dart';
 import 'package:smart_city/features/profile/presentation/manager/cubit/profile_cubit.dart';
@@ -30,72 +37,70 @@ import 'package:smart_city/features/profile/presentation/manager/cubit/profile_c
 final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
-  // SharedPrefe
+  // SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
 
-  //CacheHelper
-  getIt.registerLazySingleton<CacheHelper>(() => CacheHelper());
+  // CacheHelper
+  getIt.registerLazySingleton<CacheHelper>(() => CacheHelper(sharedPreferences));
   await CacheHelper.init();
 
-  //  Dio ===
-  getIt.registerLazySingleton<Dio>(() => Dio());
+  // حذفنا السطر ده خالص → getIt.registerLazySingleton<Dio>(() => Dio());
 
+  // API Consumer (هو اللي هيحط التوكن في كل الطلبات)
   getIt.registerLazySingleton<ApiConsumer>(
-    () => DioConsumer(dio: getIt<Dio>()),
+        () => DioConsumer(dio: Dio()), // Dio هنا عادي جدًا، المهم إن الـ Consumer هو اللي مسؤول
   );
-  // 5. AuthRepo
+
+  // Auth
   getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(api: getIt<ApiConsumer>()),
+        () => AuthRepositoryImpl(api: getIt<ApiConsumer>()),
   );
   getIt.registerFactory<SignUpCubit>(
-    () => SignUpCubit(authRepository: getIt<AuthRepository>()),
+        () => SignUpCubit(authRepository: getIt<AuthRepository>()),
   );
-  //  Cubits
   getIt.registerFactory<SignInCubit>(
-    () => SignInCubit(authRepository: getIt<AuthRepository>()),
+        () => SignInCubit(authRepository: getIt<AuthRepository>()),
   );
-  // ProfileRepo
+
+  // Profile
   getIt.registerLazySingleton<ProfileRepo>(
-    () => ProfileRepoImpl(api: getIt<ApiConsumer>()),
+        () => ProfileRepoImpl(api: getIt<ApiConsumer>()),
   );
-
-  // ProfileCubit
   getIt.registerLazySingleton<ProfileCubit>(
-    () => ProfileCubit(getIt<ProfileRepo>()),
-  );
-  getIt.registerLazySingleton<ChangePasswordRepo>(
-    () => ChangePasswordRepoImpl(api: getIt<ApiConsumer>()),
+        () => ProfileCubit(getIt<ProfileRepo>()),
   );
 
+  // Change Password
+  getIt.registerLazySingleton<ChangePasswordRepo>(
+        () => ChangePasswordRepoImpl(api: getIt<ApiConsumer>()),
+  );
   getIt.registerFactory<ChangePasswordCubit>(
-    () => ChangePasswordCubit(repo: getIt<ChangePasswordRepo>()),
+        () => ChangePasswordCubit(repo: getIt<ChangePasswordRepo>()),
   );
 
   // Bills
   getIt.registerLazySingleton<BillsRepository>(
-    () => BillsRepoImpl(api: getIt<ApiConsumer>()),
+        () => BillsRepoImpl(api: getIt<ApiConsumer>()),
   );
-  getIt.registerFactory<BillsCubit>(() => BillsCubit(getIt<BillsRepository>()));
+  getIt.registerFactory<BillsCubit>(
+        () => BillsCubit(getIt<BillsRepository>()),
+  );
 
-  // Complains
+  // Complaints ← التعديل الرئيسي هنا
   getIt.registerLazySingleton<ComplaintRemoteDataSource>(
-    () => ComplaintRemoteDataSourceImpl(getIt<Dio>()),
+        () => ComplaintRemoteDataSourceImpl(getIt<ApiConsumer>()), // استخدمنا ApiConsumer بدل Dio
   );
-
   getIt.registerLazySingleton<ComplaintRepository>(
-    () => ComplaintRepoImpl(getIt<ComplaintRemoteDataSource>()),
+        () => ComplaintRepoImpl(getIt<ComplaintRemoteDataSource>()),
   );
-
   getIt.registerLazySingleton<GetMyComplaintsUseCase>(
-    () => GetMyComplaintsUseCase(getIt<ComplaintRepository>()),
+        () => GetMyComplaintsUseCase(getIt<ComplaintRepository>()),
   );
-
   getIt.registerLazySingleton<CreateComplaintUseCase>(
-    () => CreateComplaintUseCase(getIt<ComplaintRepository>()),
+        () => CreateComplaintUseCase(getIt<ComplaintRepository>()),
   );
-
   getIt.registerFactory<ComplaintsCubit>(
-    () => ComplaintsCubit(
+        () => ComplaintsCubit(
       getMyComplaintsUseCase: getIt<GetMyComplaintsUseCase>(),
       createComplaintUseCase: getIt<CreateComplaintUseCase>(),
     ),
@@ -103,10 +108,9 @@ Future<void> setupGetIt() async {
 
   // Notifications
   getIt.registerLazySingleton<NotificationRepository>(
-    () => NotificationRepoImp(api: getIt<ApiConsumer>()),
+        () => NotificationRepoImp(api: getIt<ApiConsumer>()),
   );
-
   getIt.registerFactory<NotificationCubit>(
-    () => NotificationCubit(getIt<NotificationRepository>()),
+        () => NotificationCubit(getIt<NotificationRepository>()),
   );
 }
