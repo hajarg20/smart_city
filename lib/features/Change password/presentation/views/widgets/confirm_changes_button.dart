@@ -16,7 +16,7 @@ class ConfirmButton extends StatelessWidget {
         if (state is ChangePasswordSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
+              content: const Text(
                 'Password changed successfully. Please log in again.',
               ),
               backgroundColor: Colors.green,
@@ -27,9 +27,16 @@ class ConfirmButton extends StatelessWidget {
               ),
             ),
           );
-          if (context.mounted) {
-            Navigator.pushNamed(context, LoginView.routeName);
-          }
+
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (context.mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                LoginView.routeName,
+                (route) => false,
+              );
+            }
+          });
         } else if (state is ChangePasswordFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
