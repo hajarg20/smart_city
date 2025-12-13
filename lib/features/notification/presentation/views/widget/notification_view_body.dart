@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
@@ -72,6 +74,8 @@ class _NotificationList extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        developer.log('Current Notification State ---> $state');
+
         if (state is NotificationLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -82,7 +86,7 @@ class _NotificationList extends StatelessWidget {
           if (notifications.isEmpty) {
             return const Center(
               child: Text(
-                'there is no notifications right now   ',
+                'There are no notifications right now',
                 style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
             );
@@ -116,7 +120,12 @@ class _NotificationList extends StatelessWidget {
           );
         }
 
-        return const SizedBox();
+        return const Center(
+          child: Text(
+            'There are no notifications right now',
+            style: TextStyle(fontSize: 18, color: Colors.grey),
+          ),
+        );
       },
     );
   }
