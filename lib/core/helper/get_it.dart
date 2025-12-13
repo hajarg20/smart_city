@@ -41,66 +41,61 @@ Future<void> setupGetIt() async {
   final sharedPreferences = await SharedPreferences.getInstance();
 
   // CacheHelper
-  getIt.registerLazySingleton<CacheHelper>(() => CacheHelper(sharedPreferences));
+  getIt.registerLazySingleton<CacheHelper>(
+    () => CacheHelper(sharedPreferences),
+  );
   await CacheHelper.init();
 
-  // حذفنا السطر ده خالص → getIt.registerLazySingleton<Dio>(() => Dio());
-
-  // API Consumer (هو اللي هيحط التوكن في كل الطلبات)
-  getIt.registerLazySingleton<ApiConsumer>(
-        () => DioConsumer(dio: Dio()), // Dio هنا عادي جدًا، المهم إن الـ Consumer هو اللي مسؤول
-  );
+  getIt.registerLazySingleton<ApiConsumer>(() => DioConsumer(dio: Dio()));
 
   // Auth
   getIt.registerLazySingleton<AuthRepository>(
-        () => AuthRepositoryImpl(api: getIt<ApiConsumer>()),
+    () => AuthRepositoryImpl(api: getIt<ApiConsumer>()),
   );
   getIt.registerFactory<SignUpCubit>(
-        () => SignUpCubit(authRepository: getIt<AuthRepository>()),
+    () => SignUpCubit(authRepository: getIt<AuthRepository>()),
   );
   getIt.registerFactory<SignInCubit>(
-        () => SignInCubit(authRepository: getIt<AuthRepository>()),
+    () => SignInCubit(authRepository: getIt<AuthRepository>()),
   );
 
   // Profile
   getIt.registerLazySingleton<ProfileRepo>(
-        () => ProfileRepoImpl(api: getIt<ApiConsumer>()),
+    () => ProfileRepoImpl(api: getIt<ApiConsumer>()),
   );
   getIt.registerLazySingleton<ProfileCubit>(
-        () => ProfileCubit(getIt<ProfileRepo>()),
+    () => ProfileCubit(getIt<ProfileRepo>()),
   );
 
   // Change Password
   getIt.registerLazySingleton<ChangePasswordRepo>(
-        () => ChangePasswordRepoImpl(api: getIt<ApiConsumer>()),
+    () => ChangePasswordRepoImpl(api: getIt<ApiConsumer>()),
   );
   getIt.registerFactory<ChangePasswordCubit>(
-        () => ChangePasswordCubit(repo: getIt<ChangePasswordRepo>()),
+    () => ChangePasswordCubit(repo: getIt<ChangePasswordRepo>()),
   );
 
   // Bills
   getIt.registerLazySingleton<BillsRepository>(
-        () => BillsRepoImpl(api: getIt<ApiConsumer>()),
+    () => BillsRepoImpl(api: getIt<ApiConsumer>()),
   );
-  getIt.registerFactory<BillsCubit>(
-        () => BillsCubit(getIt<BillsRepository>()),
-  );
+  getIt.registerFactory<BillsCubit>(() => BillsCubit(getIt<BillsRepository>()));
 
   // Complaints ← التعديل الرئيسي هنا
   getIt.registerLazySingleton<ComplaintRemoteDataSource>(
-        () => ComplaintRemoteDataSourceImpl(getIt<ApiConsumer>()), // استخدمنا ApiConsumer بدل Dio
+    () => ComplaintRemoteDataSourceImpl(getIt<ApiConsumer>()),
   );
   getIt.registerLazySingleton<ComplaintRepository>(
-        () => ComplaintRepoImpl(getIt<ComplaintRemoteDataSource>()),
+    () => ComplaintRepoImpl(getIt<ComplaintRemoteDataSource>()),
   );
   getIt.registerLazySingleton<GetMyComplaintsUseCase>(
-        () => GetMyComplaintsUseCase(getIt<ComplaintRepository>()),
+    () => GetMyComplaintsUseCase(getIt<ComplaintRepository>()),
   );
   getIt.registerLazySingleton<CreateComplaintUseCase>(
-        () => CreateComplaintUseCase(getIt<ComplaintRepository>()),
+    () => CreateComplaintUseCase(getIt<ComplaintRepository>()),
   );
   getIt.registerFactory<ComplaintsCubit>(
-        () => ComplaintsCubit(
+    () => ComplaintsCubit(
       getMyComplaintsUseCase: getIt<GetMyComplaintsUseCase>(),
       createComplaintUseCase: getIt<CreateComplaintUseCase>(),
     ),
@@ -108,9 +103,9 @@ Future<void> setupGetIt() async {
 
   // Notifications
   getIt.registerLazySingleton<NotificationRepository>(
-        () => NotificationRepoImp(api: getIt<ApiConsumer>()),
+    () => NotificationRepoImp(api: getIt<ApiConsumer>()),
   );
   getIt.registerFactory<NotificationCubit>(
-        () => NotificationCubit(getIt<NotificationRepository>()),
+    () => NotificationCubit(getIt<NotificationRepository>()),
   );
 }

@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
 import 'package:smart_city/core/widgets/custom_button.dart';
-import 'package:smart_city/features/Change%20password/presentation/manager/cubit/change_password_cubit.dart';
-import 'package:smart_city/features/auth/presentation/views/login_view.dart';
+import 'package:smart_city/features/Auth/presentation/views/login_view.dart';
+
+import '../../manager/cubit/change_password_cubit.dart';
 
 class ConfirmButton extends StatelessWidget {
   const ConfirmButton({super.key});
@@ -25,10 +26,11 @@ class ConfirmButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
+              duration: const Duration(seconds: 2),
             ),
           );
 
-          Future.delayed(const Duration(milliseconds: 500), () {
+          Future.delayed(const Duration(seconds: 2), () {
             if (context.mounted) {
               Navigator.pushNamedAndRemoveUntil(
                 context,

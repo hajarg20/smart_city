@@ -13,7 +13,7 @@ import 'package:smart_city/core/utils/app_colors.dart';
 import 'package:smart_city/features/profile/presentation/manager/cubit/profile_cubit.dart';
 // Complaints Cubit
 import 'features/complaints/presentation/cubit/complaints_cubit.dart';
-// Bills Cubit ← جديد
+// Bills Cubit
 import 'features/bills/presentation/manager/cubit/bills_cubit.dart';
 
 import 'features/splash/presentation/views/splash_view.dart';
@@ -39,13 +39,11 @@ class SmartCity extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<ProfileCubit>(
-              create: (_) => getIt<ProfileCubit>(),
+              create: (_) => getIt<ProfileCubit>()..fetchUser(),
             ),
             BlocProvider<ComplaintsCubit>(
               create: (_) => getIt<ComplaintsCubit>(),
             ),
-
-            // السطر السحري اللي حل كل المشاكل
             BlocProvider<BillsCubit>(
               create: (_) => getIt<BillsCubit>()..getMyBills(1),
             ),
