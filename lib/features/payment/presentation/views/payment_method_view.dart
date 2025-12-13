@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
+import 'package:smart_city/core/utils/app_text_styls.dart';
+import 'package:smart_city/core/widgets/custom_button.dart';
 import 'package:smart_city/features/bills/presentation/manager/cubit/bills_cubit.dart';
 
 class PaymentMethodView extends StatelessWidget {
@@ -32,42 +34,18 @@ class PaymentMethodView extends StatelessWidget {
             const Spacer(),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  padding: EdgeInsets.symmetric(vertical: 18.h),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
+              child: CustomButton(
+                color: AppColors.primaryColor,
+                text: 'Confirm Payment',
                 onPressed: () {
                   context.read<BillsCubit>().payBill(billId);
 
                   showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (_) => AlertDialog(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.check_circle, color: Colors.green, size: 80),
-                          const SizedBox(height: 16),
-                          const Text("Payment Successful!", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 10),
-                          const Text("Your bill has been marked as paid."),
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context); // قفل الـ dialog
-                              Navigator.pop(context); // رجوع للـ Dashboard
-                            },
-                            child: const Text("Done"),
-                          ),
-                        ],
-                      ),
-                    ),
+                    builder: (_) => const PaymentSuccessDialog(),
                   );
                 },
-                child: const Text("Confirm Payment", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
               ),
             ),
           ],
@@ -88,8 +66,72 @@ class PaymentMethodView extends StatelessWidget {
         children: [
           Icon(icon, size: 32, color: AppColors.primaryColor),
           const SizedBox(width: 16),
-          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class PaymentSuccessDialog extends StatelessWidget {
+  const PaymentSuccessDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+      backgroundColor: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 96.w,
+              height: 96.h,
+              decoration: ShapeDecoration(
+                color: AppColors.lightprimaryColor,
+                shape: const CircleBorder(),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 42.sp,
+                ),
+              ),
+            ),
+            SizedBox(height: 18.h),
+            Text(
+              'Payment Successful!',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bold28.copyWith(
+                color: AppColors.secondaryColor2,
+                height: 1.25,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Your bill has been marked as paid.',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.regular16.copyWith(
+                color: const Color(0xFF1E1E1E),
+              ),
+            ),
+            SizedBox(height: 22.h),
+            CustomButton(
+              color: AppColors.primaryColor,
+              text: 'Done',
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
