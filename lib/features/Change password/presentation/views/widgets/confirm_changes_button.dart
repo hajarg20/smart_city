@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_city/core/utils/app_colors.dart';
 import 'package:smart_city/core/widgets/custom_button.dart';
+import 'package:smart_city/features/Auth/presentation/views/login_view.dart';
 import 'package:smart_city/features/Change%20password/presentation/manager/cubit/change_password_cubit.dart';
 
 class ConfirmButton extends StatelessWidget {
@@ -24,7 +25,12 @@ class ConfirmButton extends StatelessWidget {
               ),
             ),
           );
-          if (context.mounted) Navigator.pop(context);
+
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            LoginView.routeName,
+            (route) => false,
+          );
         } else if (state is ChangePasswordFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -41,6 +47,7 @@ class ConfirmButton extends StatelessWidget {
       },
       builder: (context, state) {
         final cubit = context.read<ChangePasswordCubit>();
+
         return state is ChangePasswordLoading
             ? const CircularProgressIndicator(color: AppColors.primaryColor)
             : CustomButton(
